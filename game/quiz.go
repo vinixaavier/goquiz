@@ -37,10 +37,10 @@ func (quiz *Quiz) StartTimer(timer *int) {
 func (quiz *Quiz) GetFlags() (filepath *string, timer *int) {
 
 	// Handling a --filepath flag
-	filepath = flag.String("filepath", "", "Specifies a file with content of the questions and answers for Quiz.")
+	filepath = flag.String("filepath", "", "Required - Specifies a file with content of the questions and answers for Quiz.")
 
 	// Handling --timer flag
-	timer = flag.Int("timer", 0, "Specifies a value to timer of the Quiz.")
+	timer = flag.Int("timer", 0, "Optional - Specifies a value to timer of the Quiz.")
 
 	flag.Parse()
 
