@@ -1,6 +1,6 @@
 package main
 
-import "quiz/game"
+import "github.com/vinixavier/goquiz/game"
 
 func main() {
 

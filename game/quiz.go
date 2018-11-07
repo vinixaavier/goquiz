@@ -15,7 +15,7 @@ type Quiz struct {
 	Question string
 	Answer   string
 	Hits     int
-	Misseds  int
+	Attempts int
 }
 
 // Quizes type: quiz list
@@ -27,20 +27,20 @@ func NewQuiz() *Quiz {
 }
 
 // StartTimer initilize a timer
-func (quiz *Quiz) StartTimer(timer *int64) {
+func (quiz *Quiz) StartTimer(timer *int) {
 	time.Sleep(time.Duration(*timer) * time.Second)
 	fmt.Println("Time out!")
 	os.Exit(1)
 }
 
 // GetFlags handles all possible flags in the Commmand-Line
-func (quiz *Quiz) GetFlags() (filepath *string, timer *int64) {
+func (quiz *Quiz) GetFlags() (filepath *string, timer *int) {
 
 	// Handling a --filepath flag
 	filepath = flag.String("filepath", "", "Specifies a file with content of the questions and answers for Quiz.")
 
 	// Handling --timer flag
-	timer = flag.Int64("timer", 0, "Specifies a value to timer of the Quiz.")
+	timer = flag.Int("timer", 0, "Specifies a value to timer of the Quiz.")
 
 	flag.Parse()
 
@@ -78,8 +78,9 @@ func (quiz *Quiz) StartQuiz() {
 
 	filepath, timer := quiz.GetFlags()
 	parse := quiz.ParseCSV(filepath)
+	fmt.Println(parse)
 
-	if timer != nil {
+	if *timer != 0 {
 		go quiz.StartTimer(timer)
 	}
 
@@ -95,7 +96,6 @@ func (quiz *Quiz) StartQuiz() {
 
 		// Trimming user input
 		input = strings.TrimSpace(input)
-		fmt.Println(input)
 
 		if input == quiz.Answer {
 			quiz.Hits++
@@ -105,9 +105,9 @@ func (quiz *Quiz) StartQuiz() {
 	}
 
 	total := len(quizes)
-	quiz.Misseds = total - quiz.Hits
+	quiz.Attempts = total - quiz.Hits
 
-	fmt.Printf("Hits: %d\n", quiz.Hits)
-	fmt.Printf("Misseds: %d\n", quiz.Misseds)
+	fmt.Printf("Correct questions: %d\n", quiz.Hits)
+	fmt.Printf("Attempts: %d\n", quiz.Attempts)
 	fmt.Printf("Total questions: %d\n", total)
 }
