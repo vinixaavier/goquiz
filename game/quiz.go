@@ -78,7 +78,6 @@ func (quiz *Quiz) StartQuiz() {
 
 	filepath, timer := quiz.GetFlags()
 	parse := quiz.ParseCSV(filepath)
-	fmt.Println(parse)
 
 	if *timer != 0 {
 		go quiz.StartTimer(timer)
